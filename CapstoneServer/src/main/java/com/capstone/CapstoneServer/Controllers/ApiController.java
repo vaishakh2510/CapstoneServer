@@ -1,5 +1,6 @@
 package com.capstone.CapstoneServer.Controllers;
 
+import com.capstone.CapstoneServer.datas.UserResponse;
 import com.capstone.CapstoneServer.entities.Invoice;
 import com.capstone.CapstoneServer.entities.InvoiceRepository;
 import com.capstone.CapstoneServer.entities.User;
@@ -23,6 +24,7 @@ public class ApiController {
 
     @PostMapping("/user")
     public ResponseEntity<Integer> createUser(@RequestBody User user) {
+    System.out.println(user);
         if (userRepository.findByUsername(user.getUsername()) != null) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(2); // Username already exists
         }
@@ -35,6 +37,7 @@ public class ApiController {
 
     @GetMapping("/user")
     public ResponseEntity<Integer> getUser(@RequestParam String username, @RequestParam String password) {
+        System.out.println("login called-----------"+username);
         User user = userRepository.findByUsername(username);
         if (user != null) {
             if (user.getPassword().equals(password)) {
@@ -58,6 +61,7 @@ public class ApiController {
     }
     @GetMapping("/invoice/{userId}")
     public ResponseEntity<List<Invoice>> getInvoicesByUserId(@PathVariable int userId) {
+        System.out.println("invoice called ----userid"+userId);
         List<Invoice> invoices = invoiceRepository.findByUserId(userId);
         if (invoices.isEmpty()) {
             return ResponseEntity.notFound().build();
