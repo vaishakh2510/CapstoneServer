@@ -2,11 +2,13 @@ package com.capstone.CapstoneServer.entities;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-
+import lombok.Setter;
 import java.util.Date;
 
 @Getter
+@Setter
 @Entity
+@Table(name = "app_user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,26 +19,6 @@ public class User {
 
     @Column(unique = true)
     private String email;
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setDateOfCreation(Date dateOfCreation) {
-        this.dateOfCreation = dateOfCreation;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     private Date dateOfCreation;
     private String password;
