@@ -3,6 +3,8 @@ package com.capstone.CapstoneServer.services;
 import com.capstone.CapstoneServer.entities.Invoice;
 import com.capstone.CapstoneServer.entities.InvoiceRepository;
 import com.capstone.CapstoneServer.exception.InvoiceNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import java.util.Optional;
 @Service
 public class InvoiceService {
 
+    private static final Logger log = LoggerFactory.getLogger(InvoiceService.class);
     @Autowired
     private InvoiceRepository invoiceRepository;
 
@@ -25,7 +28,9 @@ public class InvoiceService {
 
     //to get invoice
     public ResponseEntity<List<Invoice>> getInvoicesByUserId(int userId) {
-        List<Invoice> invoices = invoiceRepository.findByUserId(userId);
+
+        log.info("---------------getInvoicesByUserId "+userId);
+        List<Invoice> invoices = invoiceRepository.findByUserUserId(userId);
         if (invoices.isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {

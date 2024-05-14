@@ -1,12 +1,15 @@
 package com.capstone.CapstoneServer.entities;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
 import java.util.Date;
 
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "app_user")
 public class User {
@@ -15,7 +18,7 @@ public class User {
     private int userId;
 
     @Column(unique = true)
-    private String username;
+    private String userName;
 
     @Column(unique = true)
     private String email;
