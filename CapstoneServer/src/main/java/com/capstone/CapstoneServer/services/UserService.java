@@ -2,6 +2,7 @@ package com.capstone.CapstoneServer.services;
 
 import com.capstone.CapstoneServer.entities.User;
 import com.capstone.CapstoneServer.entities.UserRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.slf4j.Logger;
@@ -32,15 +33,16 @@ public class UserService {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(404); // Not Found
         }
     }
-    public ResponseEntity<Integer> createUser(User user) {
+    public ResponseEntity<Integer> createUser( User user) {
 
         log.info("create user----------------------called");
         user.setDateOfCreation(new Date());
-        if (userRepository.findByUserName(user.getUserName()) != null) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(2); // Username already exists
-        }
+
         if (userRepository.findByEmail(user.getEmail()) != null) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(3); // Email already exists
+        }
+        if (userRepository.findByUserName(user.getUserName()) != null) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(2); // Username already exists
         }
         userRepository.save(user);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(1); // Success

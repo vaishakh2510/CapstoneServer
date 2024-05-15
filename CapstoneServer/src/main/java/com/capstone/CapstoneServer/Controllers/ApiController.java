@@ -7,6 +7,7 @@ import com.capstone.CapstoneServer.entities.User;
 import com.capstone.CapstoneServer.entities.UserRepository;
 import com.capstone.CapstoneServer.services.InvoiceService;
 import com.capstone.CapstoneServer.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,20 +31,20 @@ public class ApiController {
 
     //creating user------------------------------------------------------------------
     @PostMapping("/user")
-    public ResponseEntity<Integer> createUser(@RequestBody User user) {
+    public ResponseEntity<Integer> createUser(@Valid @RequestBody User user) {
         return userService.createUser(user);
     }
     //getting user-------------------------------------------------------------------
     @GetMapping("/user")
-    public ResponseEntity<Integer> getUser(@RequestParam String username, @RequestParam String password) {
-        System.out.println("login called-----------" + username);
-        return userService.getUser(username, password);
+    public ResponseEntity<Integer> getUser(@RequestParam String userName, @RequestParam String password) {
+        System.out.println("login called-----------" + userName);
+        return userService.getUser(userName, password);
     }
 
 
     //adding invoice------------------------------------------------------------------
     @PostMapping("/invoice")
-    public ResponseEntity<Void> addInvoice(@RequestBody Invoice invoice) {
+    public ResponseEntity<Void> addInvoice( @RequestBody Invoice invoice) {
         return invoiceService.addInvoice(invoice);
     }
     // getting invoice----------------------------------------------------------------

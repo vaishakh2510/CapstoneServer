@@ -2,13 +2,16 @@ package com.capstone.CapstoneServer.services;
 
 import com.capstone.CapstoneServer.entities.Invoice;
 import com.capstone.CapstoneServer.entities.InvoiceRepository;
+import com.capstone.CapstoneServer.entities.UserRepository;
 import com.capstone.CapstoneServer.exception.InvoiceNotFoundException;
+import com.capstone.CapstoneServer.exception.UserNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,13 +20,21 @@ import java.util.Optional;
 public class InvoiceService {
 
     private static final Logger log = LoggerFactory.getLogger(InvoiceService.class);
+
     @Autowired
     private InvoiceRepository invoiceRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     //to add invoice
     public ResponseEntity<Void> addInvoice(Invoice invoice) {
-        invoiceRepository.save(invoice);
+        if (userRepository.existsById(invoice.getUser().getUserId())){
+            invoiceRepository.save(invoice);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+        else throw new UserNotFoundException(invoice.getUser().getUserId());
+
     }
 
     //to get invoice
@@ -50,7 +61,8 @@ public class InvoiceService {
             invoiceRepository.save(existingInvoice);
             return ResponseEntity.ok().build();
         } else {
-            return ResponseEntity.notFound().build();
+            //want to throw exception insted
+            throw new InvoiceNotFoundException(id);
         }
     }
 
@@ -64,5 +76,7 @@ public class InvoiceService {
             throw new InvoiceNotFoundException(id);
         }
     }
+
+
 
 }

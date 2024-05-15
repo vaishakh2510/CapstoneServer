@@ -109,17 +109,17 @@ public class InvoiceRepositoryTest {
     @Test
     @Order(8)
     public void editNonExistentInvoiceByInvoiceIdTest() {
-        Invoice invoice = invoiceRepository.findById(999).orElse(null); // Assuming 999 is a non-existent invoice ID
+        Invoice invoice = invoiceRepository.findById(-1).orElse(null);
         assertThat(invoice).isNull();
 
 
-        Invoice updatedInvoice = invoiceRepository.findById(999).orElse(null);
+        Invoice updatedInvoice = invoiceRepository.findById(-1).orElse(null);
         assertThat(updatedInvoice).isNull();
     }
     @Test
     @Order(9)
     public void deleteNonExistentInvoiceByInvoiceIdTest() {
-        Invoice invoice = invoiceRepository.findById(999).orElse(null); // Assuming 999 is a non-existent invoice ID
+        Invoice invoice = invoiceRepository.findById(999).orElse(null);
         assertThat(invoice).isNull();
 
         if (invoice != null) {

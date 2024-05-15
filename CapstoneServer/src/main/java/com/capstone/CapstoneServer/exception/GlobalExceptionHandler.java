@@ -2,24 +2,49 @@ package com.capstone.CapstoneServer.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 @ControllerAdvice
-public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+public class GlobalExceptionHandler {
+
 
     @ExceptionHandler(InvoiceNotFoundException.class)
-    public ResponseEntity<Object> handleExceptions(InvoiceNotFoundException ex, WebRequest request) {
+    public ResponseEntity<Object> handleInvoiceNotFoundExceptions(InvoiceNotFoundException ex ) {
         ExceptionResponse response = new ExceptionResponse();
         response.setMessage(ex.getMessage());
         response.setDateTime(LocalDateTime.now());
-        response.setErrorCode(101);
+        response.setErrorCode(404);
         ResponseEntity<Object> entity = new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         return entity;
+    }
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<Object> handleUserNotFoundExceptions(UserNotFoundException ex ) {
+        ExceptionResponse response = new ExceptionResponse();
+        response.setMessage(ex.getMessage());
+        response.setDateTime(LocalDateTime.now());
+        response.setErrorCode(404);
+        ResponseEntity<Object> entity = new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        return entity;
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
 }
