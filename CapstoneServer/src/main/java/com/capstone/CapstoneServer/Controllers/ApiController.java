@@ -1,9 +1,7 @@
 package com.capstone.CapstoneServer.Controllers;
 
-import com.capstone.CapstoneServer.entities.Invoice;
-import com.capstone.CapstoneServer.entities.InvoiceRepository;
-import com.capstone.CapstoneServer.entities.User;
-import com.capstone.CapstoneServer.model.InvoiceDto;
+import com.capstone.CapstoneServer.dto.UserDto;
+import com.capstone.CapstoneServer.dto.InvoiceDto;
 import com.capstone.CapstoneServer.services.InvoiceService;
 import com.capstone.CapstoneServer.services.UserService;
 import jakarta.validation.Valid;
@@ -26,15 +24,16 @@ public class ApiController {
     private InvoiceService invoiceService;
 
 
-    @Autowired
-    private InvoiceRepository invoiceRepository;
 
-    //creating user------------------------------------------------------------------
     @PostMapping("/user")
-    public ResponseEntity<Integer> createUser(@Valid @RequestBody User user) {
+    public ResponseEntity<Integer> createUser(@Valid @RequestBody UserDto user) {
         return userService.createUser(user);
     }
-    //getting user-------------------------------------------------------------------
+
+
+
+
+
     @GetMapping("/user")
     public ResponseEntity<Integer> getUser(@Valid @RequestParam String userName, @RequestParam String password) {
         log.info("getUser: userName=" + userName + ", password=" + password);
@@ -42,26 +41,51 @@ public class ApiController {
     }
 
 
-    //adding invoice------------------------------------------------------------------
+
+
+
     @PostMapping("/invoice")
     public ResponseEntity<Void> addInvoice(@Valid @RequestBody InvoiceDto invoice) {
         return invoiceService.addInvoice(invoice);
     }
-    // getting invoice----------------------------------------------------------------
+
+
+
+
+
     @GetMapping("/invoice/{userId}")
     public ResponseEntity<List<InvoiceDto>> getInvoicesByUserId(@PathVariable int userId) {
         log.info("Getting invoices by user id {}", userId);
         return invoiceService.getInvoicesByUserId(userId);
     }
 
+
+
+
+
+    @GetMapping("/singleinvoice/{invocieId}")
+    public ResponseEntity<InvoiceDto> getInvoicesByInvoiceId(@PathVariable int invocieId) {
+        log.info("Getting invoices by invoice id {}", invocieId);
+        return invoiceService.getInvoiceByInvoiceId(invocieId);
+    }
+
+
+
+
+
     @PutMapping("/invoice/{id}")
-    public ResponseEntity<Void> updateInvoice(@PathVariable("id") int id, @RequestBody Invoice invoice) {
+    public ResponseEntity<Void> updateInvoice(@PathVariable("id") int id, @RequestBody InvoiceDto invoice) {
         return invoiceService.updateInvoice(id, invoice);
     }
 
 
+
+
+
+
     @DeleteMapping("/invoice/{id}")
-    public ResponseEntity<Void> deleteInvoice(@PathVariable("id") int id) {
+    public ResponseEntity<Integer> deleteInvoice(@PathVariable("id") int id) {
+        log.info("Deleting invoice with id {}", id);
         return invoiceService.deleteInvoice(id);
     }
 

@@ -1,4 +1,4 @@
-package com.capstone.CapstoneServer.model;
+package com.capstone.CapstoneServer.dto;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -24,7 +24,7 @@ public class InvoiceDto {
 
     private String description;
 
-    @NotBlank(message = "User ID is required")
+    @NotNull(message = "User ID is required")
     private int userId;
 
 }

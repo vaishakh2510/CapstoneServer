@@ -3,6 +3,7 @@ package com.capstone.CapstoneServer.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
 
@@ -26,6 +27,7 @@ public class User {
     @NotBlank(message = "Please provide valid mail ")
     private String email;
 
+    @CreationTimestamp
     private Date dateOfCreation;
 
     @NotBlank(message = "Please provide password")
