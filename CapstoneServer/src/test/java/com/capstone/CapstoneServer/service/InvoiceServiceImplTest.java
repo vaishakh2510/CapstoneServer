@@ -3,7 +3,7 @@ package com.capstone.CapstoneServer.service;
 
 import com.capstone.CapstoneServer.entities.Invoice;
 import com.capstone.CapstoneServer.entities.InvoiceRepository;
-import com.capstone.CapstoneServer.services.InvoiceService;
+import com.capstone.CapstoneServer.services.InvoiceServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -22,10 +22,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
-public class InvoiceServiceTest {
+public class InvoiceServiceImplTest {
 
     @InjectMocks
-    private InvoiceService invoiceService;
+    private InvoiceServiceImpl invoiceServiceImpl;
 
     @Mock
     private InvoiceRepository invoiceRepository;
@@ -39,7 +39,7 @@ public class InvoiceServiceTest {
         Mockito.when(invoiceRepository.findByUserUserId(userId)).thenReturn(expectedInvoices);
 
         // Call the service method
-        ResponseEntity<List<Invoice>> response = invoiceService.getInvoicesByUserId(userId);
+        ResponseEntity<List<Invoice>> response = invoiceServiceImpl.getInvoicesByUserId(userId);
 
         // Assertions
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -54,7 +54,7 @@ public class InvoiceServiceTest {
         Mockito.when(invoiceRepository.findByUserUserId(userId)).thenReturn(Collections.emptyList());
 
         // Call the service method
-        ResponseEntity<List<Invoice>> response = invoiceService.getInvoicesByUserId(userId);
+        ResponseEntity<List<Invoice>> response = invoiceServiceImpl.getInvoicesByUserId(userId);
 
         // Assertions
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
